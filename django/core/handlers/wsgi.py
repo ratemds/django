@@ -200,10 +200,15 @@ def get_path_info(environ):
     """
     Returns the HTTP request's PATH_INFO as a unicode string.
     """
-    path_info = get_bytes_from_wsgi(environ, 'PATH_INFO', '/')
+    my_path_info = get_bytes_from_wsgi(environ, 'PATH_INFO', '/')
 
     # It'd be better to implement URI-to-IRI decoding, see #19508.
-    return path_info.decode(UTF_8)
+    try:
+        my_path_info = my_path_info.decode(UTF_8)
+    except UnicodeDecodeError:
+        stripped = (c for c in my_path_info if 0 < ord(c) < 127)
+        my_path_info = ''.join(stripped)
+    return my_path_info.decode(UTF_8)
 
 
 def get_script_name(environ):
