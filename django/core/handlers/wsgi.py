@@ -205,7 +205,7 @@ def get_path_info(environ):
     # It'd be better to implement URI-to-IRI decoding, see #19508.
     #stripped = (c for c in my_path_info if 0 < ord(c) < 127)
     #my_path_info = ''.join(stripped)
-    return my_path_info.decode(UTF_8, errors='replace')
+    return path_info.decode(UTF_8, errors='replace')
 
 
 def get_script_name(environ):
